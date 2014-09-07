@@ -1,0 +1,13 @@
+﻿// TODO: Add the rest of the item types
+
+// Shields - Normal
+Shield1=5, "Deflectors", "Deflectors"
+Shield2=5, "Advanced Deflectors", "AdvancedDeflectors"
+Shield3=5, "Force Field", "Forcefield"
+Shield4=5, "Shield Emitter", "ShieldEmitter"
+Shield5=5, "Shield Array", "ShieldArray"
+Shield6=5, "Shield Battery", "ShieldBattery"
+Shield7=5, "Mult-Phased Shields", "Multi-FrequencyShields"
+Shield8=5, "Multi-Phased Shields", "Multi-PhasedShields"
+Shield9=5, "Harmonic Modulating Shields", "HarmonicModulatingShields"
+Shield10=5, "Adaptive Shielding", "AdvancedDeflectors"
