@@ -53,8 +53,7 @@ namespace DroxEdit
         public int rankMax = 0;
         public int id = 0;
         public bool identified = true;
-        public int modifierCount = 0;
-        public List<String> modifiers = new List<string>();
+        public List<Modifier> modifiers = new List<Modifier>();
         public int armor = 0;
         public int defense = 0;
         public int powerLoad = 0;
@@ -71,10 +70,10 @@ namespace DroxEdit
         public string GetRarity()
         {
             // Check for having over 7 modifiers, which can only be done in the editor
-            if (modifierCount > 7)
+            if (modifiers.Count > 7)
                 return "Legendary";
 
-            switch (modifierCount)
+            switch (modifiers.Count)
             {
                 case 0: return "Normal";
                 case 1: return "Common";

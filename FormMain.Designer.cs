@@ -48,7 +48,6 @@
             this.numericUpDownMinLevel = new System.Windows.Forms.NumericUpDown();
             this.labelMinLevel = new System.Windows.Forms.Label();
             this.labelModifiers = new System.Windows.Forms.Label();
-            this.listView1 = new System.Windows.Forms.ListView();
             this.labelID = new System.Windows.Forms.Label();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonModifierDatabase = new System.Windows.Forms.Button();
@@ -56,6 +55,11 @@
             this.buttonModifierAdd = new System.Windows.Forms.Button();
             this.buttonModifierRemove = new System.Windows.Forms.Button();
             this.checkBoxSocket = new System.Windows.Forms.CheckBox();
+            this.listViewModifiers = new System.Windows.Forms.ListView();
+            this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderRank = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderEffect = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.buttonModifierEdit = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRank)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownArmor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDefense)).BeginInit();
@@ -71,7 +75,7 @@
             this.listViewItems.Location = new System.Drawing.Point(0, 0);
             this.listViewItems.MultiSelect = false;
             this.listViewItems.Name = "listViewItems";
-            this.listViewItems.Size = new System.Drawing.Size(127, 425);
+            this.listViewItems.Size = new System.Drawing.Size(127, 463);
             this.listViewItems.TabIndex = 0;
             this.listViewItems.UseCompatibleStateImageBehavior = false;
             this.listViewItems.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listViewItems_ItemSelectionChanged);
@@ -259,20 +263,13 @@
             // 
             // labelModifiers
             // 
-            this.labelModifiers.AutoSize = true;
-            this.labelModifiers.Location = new System.Drawing.Point(135, 284);
+            this.labelModifiers.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelModifiers.Location = new System.Drawing.Point(135, 271);
             this.labelModifiers.Name = "labelModifiers";
-            this.labelModifiers.Size = new System.Drawing.Size(49, 13);
+            this.labelModifiers.Size = new System.Drawing.Size(174, 23);
             this.labelModifiers.TabIndex = 17;
             this.labelModifiers.Text = "Modifiers";
-            // 
-            // listView1
-            // 
-            this.listView1.Location = new System.Drawing.Point(138, 300);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(176, 125);
-            this.listView1.TabIndex = 18;
-            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.labelModifiers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelID
             // 
@@ -286,7 +283,7 @@
             // buttonSave
             // 
             this.buttonSave.Enabled = false;
-            this.buttonSave.Location = new System.Drawing.Point(383, 402);
+            this.buttonSave.Location = new System.Drawing.Point(383, 440);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
             this.buttonSave.TabIndex = 20;
@@ -296,9 +293,9 @@
             // buttonModifierDatabase
             // 
             this.buttonModifierDatabase.Enabled = false;
-            this.buttonModifierDatabase.Location = new System.Drawing.Point(383, 358);
+            this.buttonModifierDatabase.Location = new System.Drawing.Point(265, 440);
             this.buttonModifierDatabase.Name = "buttonModifierDatabase";
-            this.buttonModifierDatabase.Size = new System.Drawing.Size(75, 38);
+            this.buttonModifierDatabase.Size = new System.Drawing.Size(112, 23);
             this.buttonModifierDatabase.TabIndex = 21;
             this.buttonModifierDatabase.Text = "Modifier Database";
             this.buttonModifierDatabase.UseVisualStyleBackColor = true;
@@ -306,9 +303,9 @@
             // buttonItemDatabase
             // 
             this.buttonItemDatabase.Enabled = false;
-            this.buttonItemDatabase.Location = new System.Drawing.Point(383, 314);
+            this.buttonItemDatabase.Location = new System.Drawing.Point(138, 440);
             this.buttonItemDatabase.Name = "buttonItemDatabase";
-            this.buttonItemDatabase.Size = new System.Drawing.Size(75, 38);
+            this.buttonItemDatabase.Size = new System.Drawing.Size(121, 23);
             this.buttonItemDatabase.TabIndex = 22;
             this.buttonItemDatabase.Text = "Item Database";
             this.buttonItemDatabase.UseVisualStyleBackColor = true;
@@ -316,7 +313,7 @@
             // buttonModifierAdd
             // 
             this.buttonModifierAdd.Enabled = false;
-            this.buttonModifierAdd.Location = new System.Drawing.Point(320, 300);
+            this.buttonModifierAdd.Location = new System.Drawing.Point(396, 242);
             this.buttonModifierAdd.Name = "buttonModifierAdd";
             this.buttonModifierAdd.Size = new System.Drawing.Size(28, 23);
             this.buttonModifierAdd.TabIndex = 23;
@@ -326,7 +323,7 @@
             // buttonModifierRemove
             // 
             this.buttonModifierRemove.Enabled = false;
-            this.buttonModifierRemove.Location = new System.Drawing.Point(320, 329);
+            this.buttonModifierRemove.Location = new System.Drawing.Point(430, 242);
             this.buttonModifierRemove.Name = "buttonModifierRemove";
             this.buttonModifierRemove.Size = new System.Drawing.Size(28, 23);
             this.buttonModifierRemove.TabIndex = 24;
@@ -343,11 +340,51 @@
             this.checkBoxSocket.Text = "Socket";
             this.checkBoxSocket.UseVisualStyleBackColor = true;
             // 
+            // listViewModifiers
+            // 
+            this.listViewModifiers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeaderName,
+            this.columnHeaderRank,
+            this.columnHeaderEffect});
+            this.listViewModifiers.Location = new System.Drawing.Point(138, 300);
+            this.listViewModifiers.Name = "listViewModifiers";
+            this.listViewModifiers.Size = new System.Drawing.Size(320, 125);
+            this.listViewModifiers.TabIndex = 26;
+            this.listViewModifiers.UseCompatibleStateImageBehavior = false;
+            this.listViewModifiers.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeaderName
+            // 
+            this.columnHeaderName.Text = "Name";
+            this.columnHeaderName.Width = 121;
+            // 
+            // columnHeaderRank
+            // 
+            this.columnHeaderRank.Text = "Rank";
+            this.columnHeaderRank.Width = 51;
+            // 
+            // columnHeaderEffect
+            // 
+            this.columnHeaderEffect.Text = "Effect";
+            this.columnHeaderEffect.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // buttonModifierEdit
+            // 
+            this.buttonModifierEdit.Enabled = false;
+            this.buttonModifierEdit.Location = new System.Drawing.Point(396, 271);
+            this.buttonModifierEdit.Name = "buttonModifierEdit";
+            this.buttonModifierEdit.Size = new System.Drawing.Size(62, 23);
+            this.buttonModifierEdit.TabIndex = 27;
+            this.buttonModifierEdit.Text = "Edit";
+            this.buttonModifierEdit.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(470, 425);
+            this.ClientSize = new System.Drawing.Size(470, 463);
+            this.Controls.Add(this.buttonModifierEdit);
+            this.Controls.Add(this.listViewModifiers);
             this.Controls.Add(this.checkBoxSocket);
             this.Controls.Add(this.buttonModifierRemove);
             this.Controls.Add(this.buttonModifierAdd);
@@ -355,7 +392,6 @@
             this.Controls.Add(this.buttonModifierDatabase);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.labelID);
-            this.Controls.Add(this.listView1);
             this.Controls.Add(this.labelModifiers);
             this.Controls.Add(this.numericUpDownMinLevel);
             this.Controls.Add(this.labelMinLevel);
@@ -410,7 +446,6 @@
         private System.Windows.Forms.NumericUpDown numericUpDownMinLevel;
         private System.Windows.Forms.Label labelMinLevel;
         private System.Windows.Forms.Label labelModifiers;
-        private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.Label labelID;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Button buttonModifierDatabase;
@@ -418,6 +453,11 @@
         private System.Windows.Forms.Button buttonModifierAdd;
         private System.Windows.Forms.Button buttonModifierRemove;
         private System.Windows.Forms.CheckBox checkBoxSocket;
+        private System.Windows.Forms.ListView listViewModifiers;
+        private System.Windows.Forms.ColumnHeader columnHeaderName;
+        private System.Windows.Forms.ColumnHeader columnHeaderRank;
+        private System.Windows.Forms.ColumnHeader columnHeaderEffect;
+        private System.Windows.Forms.Button buttonModifierEdit;
 
 
 

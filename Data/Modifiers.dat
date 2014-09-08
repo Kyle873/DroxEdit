@@ -1,6 +1,7 @@
 ﻿ModifierAttack=8, "+ Attack"
 ModifierBetterItems=8, "% Better Items"
 ModifierComputers=21, "+ Computers"
+ModifierChipSocket=1, "Socket"
 ModifierEngineering=21, "+ Engineering"
 ModifierHelmsman=21, "+ Helm"
 ModifierStructural=21, "+ Structure"

@@ -9,6 +9,9 @@ namespace DroxEdit
 {
     public partial class FormMain : Form
     {
+        // Constants
+        const int NameSize = 64; // 64 chars should be enough for reading the name data
+
         // File, Buffer and Stream
         string filePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\DroxOperative\User\chars\global.sav";
         string iconPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\Data\Icons";
@@ -46,14 +49,14 @@ namespace DroxEdit
 
             // Load Database files
             ItemDatabase.Init();
-            // ModifierDatabase.Init();
-            
+            ModifierDatabase.Init();
+
             // Read the Stash file
             ReadStash();
 
             // Enable update timer
             timer.Enabled = true;
-            
+
             // Select the first item automatically
             listViewItems_ItemSelectionChanged(null, new ListViewItemSelectionChangedEventArgs(null, 0, true));
         }
@@ -174,7 +177,6 @@ namespace DroxEdit
                 }
 
                 // Item Type, Subtype and Rank
-                const int NameSize = 64; // 64 chars should be enough for reading the name data
                 string type = string.Empty;
                 string subtype = string.Empty;
                 int length = 0;
@@ -201,11 +203,18 @@ namespace DroxEdit
                 stream.Read(buffer, 0, 4);
                 item.identified = Convert.ToBoolean(buffer[0]);
 
-                // Modifier Count
+                // Modifier Count is automatically calculated, so skip it
+                int modifiers = 0;
                 stream.Read(buffer, 0, 4);
-                item.modifierCount = ReadInt();
+                modifiers = ReadInt();
 
-                // TODO: Modifiers/Sockets - probably in it's own function
+                // Modifiers
+                for (int i = 0; i < modifiers; i++)
+                {
+                    Modifier modifier = ReadModifier();
+                    if (modifier != null)
+                        item.modifiers.Add(modifier);
+                }
 
                 // Armor
                 stream.Read(buffer, 0, 4);
@@ -257,6 +266,50 @@ namespace DroxEdit
             }
         }
 
+        private Modifier ReadModifier()
+        {
+            Modifier modifier = new Modifier();
+            int length = 0;
+            string name = string.Empty;
+            int rank = 0;
+
+            // Name
+            stream.Read(buffer, 0, NameSize);
+            for (int i = 0; buffer[i] != 0; i++)
+            {
+                length = i + 1;
+                name += (char)buffer[i];
+            }
+
+            // Rank
+            for (int i = 0; i < name.Length; i++)
+                if (Char.IsDigit(name[i]))
+                {
+                    rank += int.Parse(name[i].ToString());
+                    name = name.Remove(i);
+                }
+
+            // Apply Name and Rank
+            modifier.name = name;
+            modifier.rank = rank;
+
+            // ID
+            stream.Seek(0x01 - NameSize + length, SeekOrigin.Current);
+            modifier.id = ReadInt();
+            stream.Seek(0x04, SeekOrigin.Current);
+
+            // Match to Database
+            for (int i = 0; i < ModifierDatabase.Modifiers.Count; i++)
+                if (modifier.name == ModifierDatabase.Modifiers[i].name)
+                {
+                    modifier.name = ModifierDatabase.Modifiers[i].name;
+                    modifier.rankMax = ModifierDatabase.Modifiers[i].rankMax;
+                    modifier.effect = ModifierDatabase.Modifiers[i].effect;
+                }
+
+            return modifier;
+        }
+
         private int ReadInt()
         {
             byte[] data = new byte[4];
@@ -281,8 +334,30 @@ namespace DroxEdit
         {
             try // Temporary for now until the Item Database is filled out
             {
+                // Modifiers
+                labelModifiers.Text = "Modifiers: " + items[e.ItemIndex].modifiers.Count + " (" + items[e.ItemIndex].GetRarity() + ")";
+                listViewModifiers.Items.Clear();
+                for (int i = 0; i < items[e.ItemIndex].modifiers.Count; i++)
+                {
+                    ListViewItem item = new ListViewItem("Modifier");
+                    item.Text = items[e.ItemIndex].modifiers[i].ToString();
+
+                    item.SubItems.Add("Name");
+                    item.SubItems.Add("Rank");
+                    item.SubItems.Add("Effect");
+
+                    item.SubItems[0].Text = items[e.ItemIndex].modifiers[i].name;
+                    item.SubItems[1].Text = items[e.ItemIndex].modifiers[i].rank.ToString();
+                    item.SubItems[2].Text = items[e.ItemIndex].modifiers[i].effect;
+
+                    listViewModifiers.Items.Add(item);
+                }
+                listViewModifiers.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+
+                // Name
                 labelItemName.Text = items[e.ItemIndex].ToString();
 
+                // Data
                 labelID.Text = "ID\n" + items[e.ItemIndex].id.ToString();
                 checkBoxIdentified.Checked = items[e.ItemIndex].identified;
                 numericUpDownRank.Maximum = items[e.ItemIndex].rankMax;
@@ -297,11 +372,10 @@ namespace DroxEdit
                 numericUpDownDurability.Value = items[e.ItemIndex].durability;
                 numericUpDownDurabilityMax.Value = items[e.ItemIndex].durabilityMax;
                 numericUpDownMinLevel.Value = items[e.ItemIndex].minLevel;
-
-                labelModifiers.Text = "Modifiers: " + items[e.ItemIndex].modifierCount + " (" + items[e.ItemIndex].GetRarity() + ")";
             }
-            catch
+            catch (Exception ex)
             {
+                MessageBox.Show(ex.Message + "\n\n" + ex.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
