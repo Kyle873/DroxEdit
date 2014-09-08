@@ -150,8 +150,8 @@ namespace DroxEdit
             bool done = false;
             int index = 0;
 
-            // Seek to the first item
-            stream.Seek(0x0C + (cargoBays * 0x42), SeekOrigin.Begin);
+            // Seek to the first item             // V - Unknown integer? Skip it for now
+            stream.Seek(0x0C + (cargoBays * (0x3E + 0x04)), SeekOrigin.Begin);
             for (int i = 0; i < 8 - cargoBays; i++)
                 stream.Seek(0x04, SeekOrigin.Current);
 
@@ -220,7 +220,11 @@ namespace DroxEdit
                 item.powerLoad = ReadInt();
 
                 // Delimiter
-                stream.Seek(0x0D, SeekOrigin.Current);
+                stream.Seek(0x09, SeekOrigin.Current);
+
+                // Socket
+                stream.Read(buffer, 0, 4);
+                item.socket = Convert.ToBoolean(buffer[0]);
 
                 // Durability
                 stream.Read(buffer, 0, 4);
@@ -275,23 +279,30 @@ namespace DroxEdit
 
         private void listViewItems_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            labelItemName.Text = items[e.ItemIndex].ToString();
+            try // Temporary for now until the Item Database is filled out
+            {
+                labelItemName.Text = items[e.ItemIndex].ToString();
 
-            labelID.Text = "ID\n" + items[e.ItemIndex].id.ToString();
-            checkBoxIdentified.Checked = items[e.ItemIndex].identified;
-            numericUpDownRank.Maximum = items[e.ItemIndex].rankMax;
-            if (numericUpDownRank.Maximum == 0) // Shit error check for unknown items
-                numericUpDownRank.Value = 0;
-            else
-                numericUpDownRank.Value = items[e.ItemIndex].rank;
-            numericUpDownArmor.Value = items[e.ItemIndex].armor;
-            numericUpDownDefense.Value = items[e.ItemIndex].defense;
-            numericUpDownPowerLoad.Value = items[e.ItemIndex].powerLoad;
-            numericUpDownDurability.Value = items[e.ItemIndex].durability;
-            numericUpDownDurabilityMax.Value = items[e.ItemIndex].durabilityMax;
-            numericUpDownMinLevel.Value = items[e.ItemIndex].minLevel;
+                labelID.Text = "ID\n" + items[e.ItemIndex].id.ToString();
+                checkBoxIdentified.Checked = items[e.ItemIndex].identified;
+                numericUpDownRank.Maximum = items[e.ItemIndex].rankMax;
+                if (numericUpDownRank.Maximum == 0) // Shit error check for unknown items
+                    numericUpDownRank.Value = 0;
+                else
+                    numericUpDownRank.Value = items[e.ItemIndex].rank;
+                numericUpDownArmor.Value = items[e.ItemIndex].armor;
+                numericUpDownDefense.Value = items[e.ItemIndex].defense;
+                numericUpDownPowerLoad.Value = items[e.ItemIndex].powerLoad;
+                checkBoxSocket.Checked = items[e.ItemIndex].socket;
+                numericUpDownDurability.Value = items[e.ItemIndex].durability;
+                numericUpDownDurabilityMax.Value = items[e.ItemIndex].durabilityMax;
+                numericUpDownMinLevel.Value = items[e.ItemIndex].minLevel;
 
-            labelModifiers.Text = "Modifiers: " + items[e.ItemIndex].modifierCount + " (" + items[e.ItemIndex].GetRarity() + ")";
+                labelModifiers.Text = "Modifiers: " + items[e.ItemIndex].modifierCount + " (" + items[e.ItemIndex].GetRarity() + ")";
+            }
+            catch
+            {
+            }
         }
     }
 }

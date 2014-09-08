@@ -8,7 +8,9 @@
  * Each modifier has it's own corresponding delimiter + ID as well
  * File size is dependant on the size and capacities of the inserted cargo bays
  * The header for the beginning of each bag is 32 bytes long, ending with 0x04000000
-
+ * 12 bytes at the end of the file
+ * After the cargo bay data, there is an integer that may be the size of the bays?
+    
     byte[4] header;         // 0x01000000 if an item exists here
     string name;            // Name and prefix are seperated by a -
     string prefix;          // Seperated from name by a -, only the 4 default prefixes are valid
@@ -19,7 +21,8 @@
     int armor;
     int defense;
     int powerLoad;
-    byte[13] delimiter
+    byte[9] delimiter
+    bool socket;
     int durability;
     int durabilityMax;
     byte[8] unknown;        // Almost always "HB" or "HC", seems to have differing sizes depending on the item type?
@@ -55,6 +58,7 @@ namespace DroxEdit
         public int armor = 0;
         public int defense = 0;
         public int powerLoad = 0;
+        public bool socket = false;
         public int durability = 10;
         public int durabilityMax = 10;
         public int minLevel = 0;

@@ -55,6 +55,7 @@
             this.buttonItemDatabase = new System.Windows.Forms.Button();
             this.buttonModifierAdd = new System.Windows.Forms.Button();
             this.buttonModifierRemove = new System.Windows.Forms.Button();
+            this.checkBoxSocket = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRank)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownArmor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDefense)).BeginInit();
@@ -332,11 +333,22 @@
             this.buttonModifierRemove.Text = "-";
             this.buttonModifierRemove.UseVisualStyleBackColor = true;
             // 
+            // checkBoxSocket
+            // 
+            this.checkBoxSocket.AutoSize = true;
+            this.checkBoxSocket.Location = new System.Drawing.Point(389, 131);
+            this.checkBoxSocket.Name = "checkBoxSocket";
+            this.checkBoxSocket.Size = new System.Drawing.Size(60, 17);
+            this.checkBoxSocket.TabIndex = 25;
+            this.checkBoxSocket.Text = "Socket";
+            this.checkBoxSocket.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(470, 425);
+            this.Controls.Add(this.checkBoxSocket);
             this.Controls.Add(this.buttonModifierRemove);
             this.Controls.Add(this.buttonModifierAdd);
             this.Controls.Add(this.buttonItemDatabase);
@@ -405,6 +417,7 @@
         private System.Windows.Forms.Button buttonItemDatabase;
         private System.Windows.Forms.Button buttonModifierAdd;
         private System.Windows.Forms.Button buttonModifierRemove;
+        private System.Windows.Forms.CheckBox checkBoxSocket;
 
 
 
